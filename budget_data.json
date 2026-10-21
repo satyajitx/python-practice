@@ -1,0 +1,31 @@
+{
+    "transactions": [
+        {
+            "id": 1,
+            "type": "income",
+            "category": "Allowance",
+            "description": "Monthly allowance",
+            "amount": 5000.0,
+            "date": "2026-10-21"
+        },
+        {
+            "id": 2,
+            "type": "expense",
+            "category": "Food",
+            "description": "lunch",
+            "amount": 150.0,
+            "date": "2026-10-21"
+        },
+        {
+            "id": 3,
+            "type": "expense",
+            "category": "Food",
+            "description": "dinner",
+            "amount": 200.0,
+            "date": "2026-10-21"
+        }
+    ],
+    "budgets": {
+        "Food": 2000.0
+    }
+}
