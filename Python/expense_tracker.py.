@@ -1,0 +1,183 @@
+import json
+import os
+from datetime import datetime
+
+# File to store expense data
+DATA_FILE = "expenses.json"
+
+
+# Load expenses from the file
+def load_expenses():
+    if not os.path.exists(DATA_FILE):
+        return []
+
+    try:
+        with open(DATA_FILE, "r", encoding="utf-8") as file:
+            return json.load(file)
+
+    except (json.JSONDecodeError, OSError):
+        print("Error reading expenses file.")
+        return []
+
+
+# Save expenses to the file
+def save_expenses(expenses):
+    with open(DATA_FILE, "w", encoding="utf-8") as file:
+        json.dump(expenses, file, indent=4)
+
+
+# Add a new expense
+def add_expense(expenses):
+    print("\n--- ADD NEW EXPENSE ---")
+
+    title = input("Enter expense name: ").strip()
+
+    if not title:
+        print("Expense name cannot be empty.")
+        return
+
+    category = input(
+        "Enter category (Food/Travel/Shopping/Education/Other): "
+    ).strip().title()
+
+    if not category:
+        category = "Other"
+
+    try:
+        amount = float(input("Enter amount in Rs: "))
+
+        if amount <= 0:
+            print("Amount must be greater than zero.")
+            return
+
+    except ValueError:
+        print("Invalid amount! Please enter a number.")
+        return
+
+    expense = {
+        "id": max((item["id"] for item in expenses), default=0) + 1,
+        "title": title,
+        "category": category,
+        "amount": round(amount, 2),
+        "date": datetime.now().strftime("%Y-%m-%d %H:%M")
+    }
+
+    expenses.append(expense)
+    save_expenses(expenses)
+
+    print("\nExpense added successfully!")
+
+
+# Display all expenses
+def view_expenses(expenses):
+    print("\n--- ALL EXPENSES ---")
+
+    if not expenses:
+        print("No expenses found.")
+        return
+
+    for expense in expenses:
+        print("-" * 35)
+        print(f"ID       : {expense['id']}")
+        print(f"Name     : {expense['title']}")
+        print(f"Category : {expense['category']}")
+        print(f"Amount   : Rs {expense['amount']:.2f}")
+        print(f"Date     : {expense['date']}")
+
+    print("-" * 35)
+
+
+# Calculate total spending
+def show_total(expenses):
+    total = sum(expense["amount"] for expense in expenses)
+
+    print(f"\nTotal Spending: Rs {total:.2f}")
+
+
+# Show expenses by category
+def category_summary(expenses):
+    if not expenses:
+        print("\nNo expenses available.")
+        return
+
+    totals = {}
+
+    for expense in expenses:
+        category = expense["category"]
+
+        totals[category] = (
+            totals.get(category, 0) + expense["amount"]
+        )
+
+    print("\n--- CATEGORY SUMMARY ---")
+
+    for category, amount in sorted(totals.items()):
+        print(f"{category}: Rs {amount:.2f}")
+
+
+# Delete an expense
+def delete_expense(expenses):
+    if not expenses:
+        print("\nNo expenses to delete.")
+        return
+
+    view_expenses(expenses)
+
+    try:
+        expense_id = int(input("Enter expense ID to delete: "))
+
+    except ValueError:
+        print("Please enter a valid ID.")
+        return
+
+    for expense in expenses:
+        if expense["id"] == expense_id:
+            expenses.remove(expense)
+            save_expenses(expenses)
+
+            print("Expense deleted successfully!")
+            return
+
+    print("Expense ID not found.")
+
+
+# Main application
+def main():
+    expenses = load_expenses()
+
+    while True:
+        print("\n===== PERSONAL EXPENSE TRACKER =====")
+        print("1. Add Expense")
+        print("2. View All Expenses")
+        print("3. Show Total Spending")
+        print("4. Category Summary")
+        print("5. Delete Expense")
+        print("6. Exit")
+
+        choice = input("\nChoose an option (1-6): ").strip()
+
+        if choice == "1":
+            add_expense(expenses)
+
+        elif choice == "2":
+            view_expenses(expenses)
+
+        elif choice == "3":
+            show_total(expenses)
+
+        elif choice == "4":
+            category_summary(expenses)
+
+        elif choice == "5":
+            delete_expense(expenses)
+
+        elif choice == "6":
+            print("\nThank you for using Expense Tracker!")
+            break
+
+        else:
+            print("Invalid choice. Select a number from 1 to 6.")
+
+
+if __name__ == "__main__":
+    main()
