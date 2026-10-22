@@ -1,0 +1,61 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI(
+    title="CareerTrack AI",
+    description="A job application tracking API",
+    version="1.0.0"
+)
+
+# Temporary storage for job applications
+applications = []
+
+
+class JobApplication(BaseModel):
+    company: str
+    position: str
+    status: str = "Applied"
+
+
+@app.get("/")
+def home():
+    return {
+        "message": "Welcome to CareerTrack AI!",
+        "status": "API is running"
+    }
+
+
+@app.get("/applications")
+def get_applications():
+    return {
+        "total": len(applications),
+        "applications": applications
+    }
+
+
+@app.post("/applications")
+def add_application(application: JobApplication):
+    record = application.model_dump()
+    record["id"] = len(applications) + 1
+
+    applications.append(record)
+
+    return {
+        "message": "Application added successfully",
+        "application": record
+    }
+
+
+@app.get("/stats")
+def get_stats():
+    total = len(applications)
+
+    interviews = sum(
+        1 for application in applications
+        if application["status"].lower() == "interview"
+    )
+
+    return {
+        "total_applications": total,
+        "interviews": interviews
+    }
