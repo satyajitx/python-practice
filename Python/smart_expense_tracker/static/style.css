@@ -1,0 +1,828 @@
+:root {
+    --bg: #080b16;
+    --surface: #11182a;
+    --surface-light: #18233a;
+    --border: rgba(148, 163, 184, 0.14);
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --blue: #60a5fa;
+    --purple: #a78bfa;
+    --green: #34d399;
+    --red: #fb7185;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background:
+        radial-gradient(ellipse at 10% 0%, rgba(37, 99, 235, .17), transparent 35%),
+        radial-gradient(ellipse at 90% 15%, rgba(139, 92, 246, .14), transparent 35%),
+        var(--bg);
+    color: var(--text);
+    padding: 38px 24px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 38px;
+}
+
+header h1 {
+    font-size: clamp(27px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: linear-gradient(90deg, #60a5fa, #a78bfa, #e879f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+header p {
+    color: var(--muted);
+    margin-top: 9px;
+    font-size: 14px;
+}
+
+.date {
+    color: #dbeafe;
+    background: rgba(96, 165, 250, .10);
+    border: 1px solid rgba(96, 165, 250, .22);
+    padding: 13px 18px;
+    border-radius: 14px;
+    font-size: 13px;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, #18243b, #101729);
+    padding: 28px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .18);
+    transition: transform .25s ease, border-color .25s ease;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    right: -45px;
+    top: -55px;
+    border-radius: 50%;
+    background: var(--glow);
+    filter: blur(45px);
+    opacity: .24;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(147, 197, 253, .4);
+}
+
+.card p {
+    color: var(--muted);
+    margin-bottom: 17px;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+.card h2 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -.8px;
+    position: relative;
+    z-index: 1;
+}
+
+.balance {
+    --glow: #3b82f6;
+}
+
+.income {
+    --glow: #10b981;
+    color: var(--green);
+}
+
+.expense {
+    --glow: #f43f5e;
+    color: var(--red);
+}
+
+.balance h2 {
+    color: var(--blue);
+}
+
+.income h2 {
+    color: var(--green);
+}
+
+.expense h2 {
+    color: var(--red);
+}
+
+.panel {
+    background: linear-gradient(145deg, rgba(24, 35, 58, .96), rgba(15, 23, 42, .96));
+    padding: 30px;
+    border-radius: 21px;
+    border: 1px solid var(--border);
+    margin-bottom: 27px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .17);
+    backdrop-filter: blur(15px);
+}
+
+.panel h2 {
+    margin-bottom: 25px;
+    color: var(--text);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -.5px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #34415c;
+    background: #0b1222;
+    color: white;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, .13);
+}
+
+input::placeholder {
+    color: #64748b;
+}
+
+input[type="date"] {
+    color-scheme: dark;
+}
+
+.add-button {
+    margin-top: 25px;
+    background: linear-gradient(110deg, #2563eb, #7c3aed);
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(79, 70, 229, .25);
+    transition: transform .2s, box-shadow .2s;
+}
+
+.add-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(79, 70, 229, .4);
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th,
+td {
+    padding: 17px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    color: #93c5fd;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    font-weight: 700;
+}
+
+td {
+    color: #cbd5e1;
+    font-size: 13px;
+}
+
+tbody tr {
+    transition: background .2s;
+}
+
+tbody tr:hover {
+    background: rgba(96, 165, 250, .06);
+}
+
+.tag {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.tag.income {
+    background: rgba(16, 185, 129, .13);
+    color: #6ee7b7;
+}
+
+.tag.expense {
+    background: rgba(244, 63, 94, .13);
+    color: #fda4af;
+}
+
+.delete-button {
+    background: rgba(244, 63, 94, .13);
+    color: #fb7185;
+    padding: 9px 13px;
+    border: 1px solid rgba(244, 63, 94, .2);
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background .2s;
+}
+
+.delete-button:hover {
+    background: #be123c;
+    color: white;
+}
+
+.empty {
+    text-align: center;
+    padding: 45px 20px;
+    color: var(--muted);
+}
+
+.empty h3 {
+    margin-bottom: 10px;
+    color: white;
+    font-size: 18px;
+}
+
+.message {
+    padding: 15px 18px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    font-size: 14px;
+}
+
+.message.success {
+    background: rgba(16, 185, 129, .13);
+    color: #a7f3d0;
+    border: 1px solid rgba(16, 185, 129, .2);
+}
+
+.message.error {
+    background: rgba(244, 63, 94, .13);
+    color: #fecdd3;
+    border: 1px solid rgba(244, 63, 94, .2);
+}
+
+footer {
+    text-align: center;
+    color: #64748b;
+    padding: 28px 0;
+    font-size: 12px;
+}
+
+@media (max-width: 700px) {
+    body {
+        padding: 22px 14px;
+    }
+
+    header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    header h1 {
+        font-size: 27px;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .panel {
+        padding: 21px 17px;
+    }
+
+    .card {
+        padding: 23px;
+    }
+}
+
+/* ================================
+   SMART EXPENSE TRACKER ANIMATIONS
+================================ */
+
+/* Animated background */
+body {
+    background-size: 200% 200%;
+    animation: backgroundFlow 16s ease infinite;
+}
+
+@keyframes backgroundFlow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Smooth page entrance */
+.container {
+    animation: pageEnter 1s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animated title */
+header h1 {
+    background-size: 200% auto;
+    animation: titleGlow 5s linear infinite;
+}
+
+@keyframes titleGlow {
+    to { background-position: 200% center; }
+}
+
+/* Cards entrance */
+.summary .card {
+    animation: cardEnter .8s ease both;
+}
+
+.summary .card:nth-child(1) { animation-delay: .15s; }
+.summary .card:nth-child(2) { animation-delay: .3s; }
+.summary .card:nth-child(3) { animation-delay: .45s; }
+
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Premium card hover */
+.card {
+    transform-style: preserve-3d;
+    transition:
+        transform .35s cubic-bezier(.2, .8, .2, 1),
+        box-shadow .35s ease,
+        border-color .35s ease;
+}
+
+.card:hover {
+    transform: translateY(-9px) scale(1.025);
+    box-shadow: 0 18px 45px rgba(59, 130, 246, .16);
+}
+
+/* Glow behind cards */
+.card::after {
+    transition: opacity .4s ease, transform .5s ease;
+}
+
+.card:hover::after {
+    opacity: .55;
+    transform: scale(1.5);
+}
+
+/* Panel entrance */
+.panel {
+    animation: panelEnter .9s ease both;
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.panel:nth-of-type(1) { animation-delay: .25s; }
+.panel:nth-of-type(2) { animation-delay: .4s; }
+
+@keyframes panelEnter {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.panel:hover {
+    border-color: rgba(96, 165, 250, .25);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, .2);
+}
+
+/* Animated add button */
+.add-button {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.add-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 80%;
+    height: 100%;
+    background: linear-gradient(
+        110deg,
+        transparent,
+        rgba(255, 255, 255, .3),
+        transparent
+    );
+    transform: skewX(-20deg);
+    transition: left .65s ease;
+    z-index: -1;
+}
+
+.add-button:hover::before {
+    left: 140%;
+}
+
+.add-button:active {
+    transform: scale(.96);
+}
+
+/* Input focus animation */
+input,
+select {
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        transform .25s ease;
+}
+
+input:focus,
+select:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, .15),
+                0 0 18px rgba(96, 165, 250, .12);
+}
+
+/* Transaction row animation */
+tbody tr {
+    animation: rowEnter .45s ease both;
+}
+
+@keyframes rowEnter {
+    from {
+        opacity: 0;
+        transform: translateX(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Button and delete interaction */
+.delete-button {
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.delete-button:hover {
+    transform: scale(1.06);
+    box-shadow: 0 5px 18px rgba(244, 63, 94, .25);
+}
+
+/* Date badge floating effect */
+.date {
+    animation: gentleFloat 4s ease-in-out infinite;
+}
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Flash message entrance */
+.message {
+    animation: messageEnter .4s ease both;
+}
+
+@keyframes messageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Respect reduced-motion accessibility settings */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+/* ==========================================
+   PREMIUM FINTECH ANIMATION UPGRADE
+========================================== */
+
+/* 1. Moving ambient background */
+body {
+    background:
+        radial-gradient(ellipse at 10% 15%, rgba(37, 99, 235, .18), transparent 35%),
+        radial-gradient(ellipse at 90% 20%, rgba(168, 85, 247, .17), transparent 35%),
+        radial-gradient(ellipse at 50% 100%, rgba(6, 182, 212, .10), transparent 40%),
+        #080b16;
+    background-size: 140% 140%;
+    animation: ambientMove 18s ease-in-out infinite alternate;
+}
+
+@keyframes ambientMove {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 20% 100%; }
+}
+
+/* 2. Animated neon heading */
+header h1 {
+    background-image: linear-gradient(
+        90deg,
+        #60a5fa,
+        #c084fc,
+        #f0abfc,
+        #60a5fa
+    );
+    background-size: 300% auto;
+    animation: neonTitle 6s linear infinite;
+    filter: drop-shadow(0 0 12px rgba(168, 85, 247, .22));
+}
+
+@keyframes neonTitle {
+    to { background-position: 300% center; }
+}
+
+/* 3. Floating summary cards */
+.summary .card {
+    animation: floatingCard 5s ease-in-out infinite;
+}
+
+.summary .card:nth-child(2) {
+    animation-delay: -1.7s;
+}
+
+.summary .card:nth-child(3) {
+    animation-delay: -3.4s;
+}
+
+@keyframes floatingCard {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+.summary .card:hover {
+    animation-play-state: paused;
+    transform: translateY(-12px) scale(1.025);
+    box-shadow:
+        0 15px 40px rgba(59, 130, 246, .18),
+        0 0 25px rgba(139, 92, 246, .12);
+}
+
+/* 4. Animated light sweep across cards */
+.card {
+    overflow: hidden;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -70%;
+    width: 45%;
+    height: 300%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, .055),
+        transparent
+    );
+    transform: rotate(25deg);
+    animation: cardShine 7s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes cardShine {
+    0%, 65% { left: -80%; }
+    100% { left: 160%; }
+}
+
+/* 5. Pulsating card glow */
+.card::after {
+    animation: glowPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+    from { opacity: .12; transform: scale(.9); }
+    to { opacity: .4; transform: scale(1.3); }
+}
+
+/* 6. Animated panels */
+.panel {
+    position: relative;
+    animation: panelReveal .9s ease both;
+}
+
+@keyframes panelReveal {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.panel:hover {
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, .22),
+        0 0 22px rgba(96, 165, 250, .08);
+}
+
+/* 7. Premium button shimmer */
+.add-button {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    box-shadow: 0 0 18px rgba(99, 102, 241, .25);
+    animation: buttonGlow 3s ease-in-out infinite;
+}
+
+.add-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        110deg,
+        transparent 20%,
+        rgba(255, 255, 255, .35) 50%,
+        transparent 80%
+    );
+    transform: translateX(-120%);
+    animation: buttonShimmer 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes buttonShimmer {
+    0%, 65% { transform: translateX(-120%); }
+    100% { transform: translateX(120%); }
+}
+
+@keyframes buttonGlow {
+    0%, 100% { box-shadow: 0 0 12px rgba(99, 102, 241, .2); }
+    50% { box-shadow: 0 0 27px rgba(139, 92, 246, .4); }
+}
+
+.add-button:hover {
+    transform: translateY(-4px) scale(1.025);
+}
+
+/* 8. Smooth input focus */
+input:focus,
+select:focus {
+    border-color: #a78bfa;
+    box-shadow:
+        0 0 0 3px rgba(167, 139, 250, .13),
+        0 0 22px rgba(96, 165, 250, .16);
+}
+
+/* 9. Animated transaction rows */
+tbody tr {
+    animation: transactionReveal .55s ease both;
+}
+
+tbody tr:hover {
+    background: linear-gradient(
+        90deg,
+        rgba(96, 165, 250, .09),
+        rgba(168, 85, 247, .07)
+    );
+}
+
+@keyframes transactionReveal {
+    from {
+        opacity: 0;
+        transform: translateX(-18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 10. Success message glow */
+.message.success {
+    animation: successReveal .5s ease both,
+               successPulse 3s ease-in-out infinite 0.5s;
+}
+
+@keyframes successReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes successPulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+    50% { box-shadow: 0 0 20px rgba(16, 185, 129, .12); }
+}
+
+/* 11. Smooth delete button */
+.delete-button:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 0 18px rgba(244, 63, 94, .25);
+}
+
+/* 12. Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

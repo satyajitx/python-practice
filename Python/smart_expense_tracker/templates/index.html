@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Expense Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div>
+            <h1>Smart Expense Tracker</h1>
+            <p>Manage your money. Track your future.</p>
+        </div>
+        <div class="date">
+            {{ today }}
+        </div>
+    </header>
+
+    <!-- FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <!-- SUMMARY CARDS -->
+    <section class="summary">
+
+        <div class="card balance">
+            <p>Total Balance</p>
+            <h2>₹{{ "%.2f"|format(balance) }}</h2>
+        </div>
+
+        <div class="card income">
+            <p>Total Income</p>
+            <h2>₹{{ "%.2f"|format(income) }}</h2>
+        </div>
+
+        <div class="card expense">
+            <p>Total Expenses</p>
+            <h2>₹{{ "%.2f"|format(expenses) }}</h2>
+        </div>
+
+    </section>
+
+    <!-- ADD TRANSACTION -->
+    <section class="panel">
+
+        <h2>Add New Transaction</h2>
+
+        <form action="{{ url_for('add_transaction') }}"
+              method="POST">
+
+            <div class="form-grid">
+
+                <div>
+                    <label>Transaction Title</label>
+                    <input type="text"
+                           name="title"
+                           placeholder="Example: Grocery Shopping"
+                           maxlength="100"
+                           required>
+                </div>
+
+                <div>
+                    <label>Amount (₹)</label>
+                    <input type="number"
+                           name="amount"
+                           placeholder="Enter amount"
+                           min="0.01"
+                           step="0.01"
+                           required>
+                </div>
+
+                <div>
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="">Select Category</option>
+                        <option>Food</option>
+                        <option>Travel</option>
+                        <option>Shopping</option>
+                        <option>Education</option>
+                        <option>Salary</option>
+                        <option>Business</option>
+                        <option>Entertainment</option>
+                        <option>Healthcare</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Transaction Type</label>
+                    <select name="transaction_type" required>
+                        <option value="">Select Type</option>
+                        <option value="Income">Income</option>
+                        <option value="Expense">Expense</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Date</label>
+                    <input type="date"
+                           name="transaction_date"
+                           value="{{ today }}"
+                           required>
+                </div>
+
+            </div>
+
+            <button type="submit" class="add-button">
+                + Add Transaction
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- TRANSACTION HISTORY -->
+    <section class="panel">
+
+        <h2>Transaction History</h2>
+
+        {% if transactions %}
+
+        <div class="table-wrapper">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for transaction in transactions %}
+
+                    <tr>
+                        <td>{{ transaction.title }}</td>
+                        <td>{{ transaction.category }}</td>
+                        <td>{{ transaction.transaction_date }}</td>
+
+                        <td>
+                            <span class="tag {{ transaction.transaction_type|lower }}">
+                                {{ transaction.transaction_type }}
+                            </span>
+                        </td>
+
+                        <td class="{{ transaction.transaction_type|lower }}">
+                            {% if transaction.transaction_type == "Income" %}
+                                +₹{{ "%.2f"|format(transaction.amount) }}
+                            {% else %}
+                                -₹{{ "%.2f"|format(transaction.amount) }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <form action="{{ url_for('delete_transaction', transaction_id=transaction.id) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Delete this transaction?');">
+
+                                <button type="submit" class="delete-button">
+                                    Delete
+                                </button>
+
+                            </form>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+
+        {% else %}
+
+            <div class="empty">
+                <h3>No Transactions Yet</h3>
+                <p>Add your first income or expense above.</p>
+            </div>
+
+        {% endif %}
+
+    </section>
+
+    <footer>
+        Smart Expense Tracker | Built with Python & Flask
+    </footer>
+
+</div>
+
+</body>
+</html>
